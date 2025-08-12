@@ -1,0 +1,70 @@
+langchain
+python-dotenv
+ipykernel
+langchain_community 
+pypdf
+bs4
+arxiv
+fitz
+frontend
+pymupdf
+wikipedia
+yt-dlp
+librosa
+pydub
+ffmpeg-python
+openai
+google-cloud-speech
+SpeechRecognition 
+pydub
+deepgram-sdk
+whisper
+langchain-text-splitters #langchain text splitting techniques
+
+#for hugging face Api embedding..
+sentence_transformers
+langchain_huggingface
+
+#vector database store
+faiss-cpu
+
+#lets install chromadb for diff vectorstore database..
+chromadb
+langchain_chroma
+google-cloud-speech
+vosk
+huggingface_hub
+spacy
+pyai
+openai-whisper
+openai
+
+## setup langchain openai...lib
+langchain-openai #with the integration of openai all the modules will be in this ...
+beautifulsoup4
+
+#for MODULE 2 LCEL
+langchain_groq #we will be using this lib to make use of all the exisiting models in groq interact it with langchain modules..
+
+#lets install fastapi for Langserve usage...
+fastapi
+langserve[all]
+uvicorn
+sse_starlette
+
+streamlit
+chromadb
+nltk
+
+
+arxiv
+wikipedia
+
+duckduckgo-search #for internet search..
+
+validators==0.33.0 #helps to validates the url
+youtube_transcript_api ==0.6.2
+pytube 
+unstructured
+youtube-transcript-api
+tf-keras

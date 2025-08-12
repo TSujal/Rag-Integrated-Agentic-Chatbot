@@ -1,0 +1,198 @@
+1) from langchain_community.chat_message_histories import ChatMessageHistory
+
+Purpose: its a ready to use tool designed to store and manage a history of chat messages
+(eg., human and AI messages) in memory. it's practical for simple use cases where you need to track conversation
+history without much customization.
+
+Key Features : 
+    * Stores message as a list in memory (not persistent by default)
+    * Provides methods like add_message to append new msg and "clear" to rest the history.
+    * it's a fully functional class you can instantiate and use directly.
+
+2) from langchain_core.chat_history import BaseChatMessageHistory
+
+Purpose: Its an abstract base class provided by langchain_core package.
+It defines a standard interface (a blueprint) for chat history management.
+It's not meant to be used directly but serves as a foundation for creating custom chat history implementations.
+Think of it as a set of instructions that other classes (like ChatMessageHistory) follow.
+
+Because it’s an abstract base class (ABC), you can’t use it directly—it’s not a finished tool. Instead, it’s a starting point for creating your own custom chat history tools.
+
+Why Does It Exist?
+LangChain wants to make sure all chat history systems (whether built-in or custom) work the same way. BaseChatMessageHistory enforces a standard structure by defining three key things that any chat history system must have:
+
+A way to add messages (add_message method).
+A way to get all messages (messages property).
+A way to clear the history (clear method).
+
+
+3) langchain_core.runnables.history import RunnableWithMessageHistory
+
+its a part of Langchain runnables system which is a flexible
+way to define and execute workflows like:
+chains of actions or steps. Specifically, this class wraps another Runnable
+and adds the ability to manage and inject chat history into the process
+
+In simpler Terms: 
+* It’s a tool that takes a regular LangChain workflow (like a prompt + model) and makes it "history-aware."
+* It keeps track of past messages (the conversation history) and passes them into the workflow when needed.
+
+NOTE: Without it, a language model would treat every input as a fresh start, forgetting what was said before.
+
+RunnableWithMessageHistory solves this by:
+
+    1) Storing conversation history: It uses a BaseChatMessageHistory implementation (like ChatMessageHistory or 
+    a custom one) to keep track of messages.
+    2) Injecting history into the workflow: It automatically adds the history to the input of your Runnable 
+    (e.g., a prompt or model) so the AI can respond with context.
+    3) Managing sessions: It can handle different conversations (e.g., for multiple users) by associating
+    history with a session ID.
+
+
+
+
+
+4) from langchain.chains.combine_documents import create_stuff_documents_chain
+- create_stuff_documents_chain: its a function which creates a chain that takes
+a list of documents, "stuffs" them into a prompt (ie,
+concatenates their content), and sends the result (concatinated result) to a language model to
+generate a response.
+
+- It's a simple way to process retrieved docs without fancy merging or ranking -- just 
+shove them all into the prompt.
+
+PURPOSE: 
+    - To generate answers or summaries directly from a set of docs
+    - It's the "generation" part of RAG pipeline, where the model uses the 
+    provided documents as context.
+
+Commonlu used in :Q&A systems, summarization, or basic document-based chatbots.
+
+5) from langchain.chains import create_history_aware_retriever ,create_retrieval_chain
+
+create_history_aware_retriever:
+
+- Its a function that creates a retriever that takes the conversation history into account when
+searching for docs.
+- It combines a retriever with a language model to reformulate the users
+query based on past msg before retrieving doc
+
+PURPOSE:
+    * To make retrieval context-aware, ensuring the documents fetched are 
+    relevant to the ongoing conversation, not just the latest input.
+    * It bridges the gap between stateless retrieval and 
+    stateful conversation.
+
+
+create_retrieval_chain:
+    This func combines the retriever with document-processing chain into a 
+    single, end-to-end question-answering chain
+    It handles both retrieval and generation in one go.
+
+    PURPOSE: 
+        Purpose
+            * To simplify building a RAG system where you retrieve 
+            relevant documents and generate an answer based on them.
+            * It’s a higher-level abstraction that ties retrieval and 
+            response generation together.
+
+
+
+6) from langchain.agents import initialize_agents, AgentType
+So, this modules are used for creating and managing agents
+in  Langchain.
+
+Initialize_agents : is a function used to initialize an agent
+based on a set of tools and an LLM.
+
+The agent interacts with these tools and processes
+tasks based on input queries.
+
+agents are used to handle a complex workflow by making decision,
+using tools (like Wikipedia, APIs, custom functions) and iterating over
+responses. You can define multiple types of agents to
+customize how they interact with different tools
+
+AgentType: It is an enumeration used to define the type of agent to 
+create Different types of agents have different behaviors and capabilities.
+
+Common AgentType options:
+    * ZERO_SHOT_REACT_DESCRIPTION : This type of agent uses React Framework,
+    which allows it to execute tools and responds to queries based on a 
+    zero-shot approach (i.e, no prior training on specific tasks).
+
+    * SELF_ASK_WITH_SEARCH : this type of agent first tries to answer the question based on its own knowledge, and if it 
+    cannot answer, it searches for more information using the tools
+    provided.
+
+    * ZERO_SHOT: Another approach to create agents that react without specific training.
+   . 
+
+   """
+   Zero-Shot React Description
+    Zero-Shot refers to a scenario where the model is tasked 
+    with a problem without having seen any specific examples 
+    of it during training. Instead, it is expected to generalize
+    from other experiences or knowledge.
+
+    React Description in this case typically refers to an agent 
+    or tool that responds to inputs or prompts dynamically. When 
+    using Zero-Shot, the model doesn’t rely on predefined examples
+    but instead can answer questions or react based on its training. 
+
+        Use case:
+            When you have a model that is capable of 
+            answering questions or providing descriptions 
+            about new topics or data that it has never seen 
+            directly.
+
+  Chat Zero-Shot React Description
+    Chat Zero-Shot React is essentially an extension of the 
+    Zero-Shot model but applied in a chat or conversational setting.
+
+    In this case, React Description focuses on how the model (or agent)
+    can react to conversational inputs without prior training on specific
+    dialogues or exchanges. The model uses its broader understanding of 
+    language and concepts to engage in conversation effectively.
+
+    Use case:
+
+    In conversational AI, chatbots, or virtual assistants
+    where the agent needs to maintain context and provide
+    responses in real-time without having seen the exact 
+    conversation during training.
+
+
+ Structured Chat Zero-Shot React Description
+    Structured Chat Zero-Shot React adds a layer of structure
+    to the chat process, meaning the inputs and responses are 
+    organized or formatted according to predefined schemas or 
+    templates.
+
+    Structured here refers to how the model understands that the 
+    conversation follows certain patterns, such as question-answer 
+    formats, and responds accordingly. Even though the agent hasn't 
+    been explicitly trained on the exact input or interaction, it can 
+    still follow a specific structure while generating its response.
+
+    Use case:
+
+    Structured conversations are useful when you need 
+    to ensure the model’s responses follow a specific pattern, 
+    such as providing information in a bulleted list or answering with 
+    specific categories like pros and cons, steps, or types.
+   """
+7) 2️⃣ from langchain.callbacks import StreamlitCallbackHandler
+StreamlitCallbackHandler is used for integrating LangChain
+workflows with Streamlit, a popular framework for building
+interactive applications and dashboards in Python. 
+
+This callback handler allows you to display the output 
+from LangChain directly in a Streamlit app in real time.
+
+
+Use Case:
+When you create agents, chains, or other LangChain 
+components, you might want to display the output in a Streamlit 
+app. The StreamlitCallbackHandler helps you do this by streaming the 
+output from LangChain to the Streamlit interface.
